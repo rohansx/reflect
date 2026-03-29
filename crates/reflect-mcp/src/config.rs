@@ -22,6 +22,27 @@ impl Default for ReflectConfig {
                 timeout_secs: 60,
             },
         );
+        eval.insert(
+            "pytest".into(),
+            EvalConfig {
+                command: "pytest --tb=short -q".into(),
+                timeout_secs: 120,
+            },
+        );
+        eval.insert(
+            "eslint".into(),
+            EvalConfig {
+                command: "npx eslint . --format stylish".into(),
+                timeout_secs: 60,
+            },
+        );
+        eval.insert(
+            "tsc".into(),
+            EvalConfig {
+                command: "npx tsc --noEmit".into(),
+                timeout_secs: 60,
+            },
+        );
         Self {
             storage: StorageConfig::default(),
             eval,
@@ -134,6 +155,16 @@ default_limit = 10
             "cargo test -- --nocapture"
         );
         assert_eq!(config.recall.default_limit, 10);
+    }
+
+    #[test]
+    fn default_has_all_evaluators() {
+        let config = ReflectConfig::default();
+        assert!(config.eval.contains_key("cargo_test"));
+        assert!(config.eval.contains_key("pytest"));
+        assert!(config.eval.contains_key("eslint"));
+        assert!(config.eval.contains_key("tsc"));
+        assert_eq!(config.eval.get("pytest").unwrap().command, "pytest --tb=short -q");
     }
 
     #[test]
