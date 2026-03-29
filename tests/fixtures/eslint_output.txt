@@ -1,0 +1,11 @@
+/home/user/project/src/components/Auth.tsx
+  12:5   error  'useState' is defined but never used       no-unused-vars
+  24:10  error  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  45:3   warning  Unexpected console statement              no-console
+
+/home/user/project/src/utils/format.ts
+  8:1   error  'moment' is not defined                    no-undef
+  15:7  warning  'result' is assigned a value but never used  no-unused-vars
+
+✖ 5 problems (3 errors, 2 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
