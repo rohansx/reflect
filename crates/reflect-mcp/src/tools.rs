@@ -21,8 +21,10 @@ use crate::config::ReflectConfig;
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
 pub struct EvaluateOutputInput {
     #[schemars(description = "The code being evaluated (stored for reflection context)")]
+    #[allow(dead_code)]
     pub code: Option<String>,
     #[schemars(description = "Language hint for parser selection")]
+    #[allow(dead_code)]
     pub language: String,
     #[schemars(description = "List of evaluators to run")]
     pub evaluators: Vec<String>,
@@ -367,10 +369,8 @@ impl ReflectServer {
         };
 
         // Get patterns with 2+ occurrences as "patterns to watch"
-        let patterns_to_watch = match storage.list_patterns(2, 10).await {
-            Ok(p) => p,
-            Err(_) => vec![],
-        };
+        let patterns_to_watch: Vec<reflect_core::ErrorPattern> =
+            storage.list_patterns(2, 10).await.unwrap_or_default();
 
         json_ok(&serde_json::json!({
             "reflections": reflections,
