@@ -1,6 +1,13 @@
 # reflect
 
+[![Crates.io](https://img.shields.io/crates/v/reflect-mcp)](https://crates.io/crates/reflect-mcp)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Self-correction engine for AI coding agents. An MCP server that implements the [Reflexion](https://arxiv.org/abs/2303.11366) pattern — turning agent failures into persistent, searchable lessons that prevent the same mistakes across sessions.
+
+```bash
+cargo install reflect-mcp
+```
 
 <p align="center">
   <img src="demo/demo.gif" alt="reflect demo" width="700">
