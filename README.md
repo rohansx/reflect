@@ -2,6 +2,10 @@
 
 Self-correction engine for AI coding agents. An MCP server that implements the [Reflexion](https://arxiv.org/abs/2303.11366) pattern — turning agent failures into persistent, searchable lessons that prevent the same mistakes across sessions.
 
+<p align="center">
+  <img src="demo/demo.gif" alt="reflect demo" width="700">
+</p>
+
 ## The Problem
 
 AI coding agents make mistakes, get corrected, and then make the **exact same mistakes** in the next session. Context resets wipe everything. There's no memory of what went wrong, what was learned, or which error patterns keep recurring.
