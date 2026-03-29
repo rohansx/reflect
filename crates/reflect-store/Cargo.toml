@@ -4,10 +4,15 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "SQLite storage backend for reflect"
+repository.workspace = true
 
 [features]
 default = []
-ctxgraph = ["dep:ctxgraph-core"]
+# ctxgraph: enable when ctxgraph is published to crates.io
+# ctxgraph = ["dep:ctxgraph-core"]
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(feature, values("ctxgraph"))'] }
 
 [dependencies]
 reflect-core = { path = "../reflect-core" }
@@ -20,7 +25,7 @@ async-trait = { workspace = true }
 tracing = { workspace = true }
 chrono = { workspace = true }
 uuid = { workspace = true }
-ctxgraph-core = { workspace = true, optional = true }
+# ctxgraph-core = { workspace = true, optional = true }
 
 [dev-dependencies]
 tokio = { workspace = true }

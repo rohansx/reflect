@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "MCP server for reflect"
+repository.workspace = true
 
 [[bin]]
 name = "reflect-mcp"
@@ -11,7 +12,11 @@ path = "src/main.rs"
 
 [features]
 default = []
-ctxgraph = ["reflect-store/ctxgraph"]
+# ctxgraph: enable when ctxgraph is published to crates.io
+# ctxgraph = ["reflect-store/ctxgraph"]
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(feature, values("ctxgraph"))'] }
 
 [dependencies]
 reflect-core = { path = "../reflect-core" }

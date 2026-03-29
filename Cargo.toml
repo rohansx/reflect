@@ -26,4 +26,5 @@ tracing = "0.1"
 tracing-subscriber = "0.3"
 anyhow = "1"
 regex = "1"
-ctxgraph-core = { path = "../ctxgraph/crates/ctxgraph-core", package = "ctxgraph", default-features = false }
+# ctxgraph-core: uncomment when ctxgraph is published to crates.io
+# ctxgraph-core = { version = "0.7", package = "ctxgraph", default-features = false }
