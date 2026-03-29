@@ -4,7 +4,6 @@ use reflect_core::pattern::{PatternEngine, PatternMatch};
 use reflect_core::storage::Storage;
 use reflect_core::types::*;
 use reflect_eval::{run_evaluator, RunnerConfig};
-use reflect_store::SqliteStorage;
 use rmcp::handler::server::router::tool::ToolRouter;
 use rmcp::handler::server::wrapper::Parameters;
 use rmcp::model::ServerCapabilities;
@@ -95,7 +94,7 @@ pub struct GetReflectionStatsInput {}
 
 #[derive(Clone)]
 pub struct ReflectServer {
-    storage: Arc<Mutex<SqliteStorage>>,
+    storage: Arc<Mutex<Box<dyn Storage>>>,
     pattern_engine: Arc<PatternEngine>,
     config: Arc<ReflectConfig>,
     tool_router: ToolRouter<Self>,
@@ -150,7 +149,7 @@ fn json_err(msg: &str) -> String {
 #[tool_router]
 impl ReflectServer {
     pub fn new(
-        storage: SqliteStorage,
+        storage: Box<dyn Storage>,
         pattern_engine: PatternEngine,
         config: ReflectConfig,
     ) -> Self {

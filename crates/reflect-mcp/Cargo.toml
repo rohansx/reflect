@@ -9,6 +9,10 @@ description = "MCP server for reflect"
 name = "reflect-mcp"
 path = "src/main.rs"
 
+[features]
+default = []
+ctxgraph = ["reflect-store/ctxgraph"]
+
 [dependencies]
 reflect-core = { path = "../reflect-core" }
 reflect-eval = { path = "../reflect-eval" }

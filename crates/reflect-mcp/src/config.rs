@@ -56,12 +56,14 @@ impl Default for ReflectConfig {
 #[serde(default)]
 pub struct StorageConfig {
     pub path: String,
+    pub backend: String,
 }
 
 impl Default for StorageConfig {
     fn default() -> Self {
         Self {
             path: ".reflect/reflect.db".into(),
+            backend: "sqlite".into(),
         }
     }
 }

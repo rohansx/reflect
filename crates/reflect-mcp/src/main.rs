@@ -3,6 +3,7 @@ mod tools;
 
 use config::{load_config, resolve_db_path};
 use reflect_core::pattern::{PatternEngine, PatternRule};
+use reflect_core::storage::Storage;
 use reflect_store::SqliteStorage;
 use rmcp::transport::io::stdio;
 use rmcp::ServiceExt;
@@ -22,7 +23,17 @@ async fn main() -> anyhow::Result<()> {
         std::fs::create_dir_all(parent)?;
     }
 
-    let storage = SqliteStorage::open(&db_path)?;
+    let storage: Box<dyn Storage> = match config.storage.backend.as_str() {
+        #[cfg(feature = "ctxgraph")]
+        "ctxgraph" => {
+            tracing::info!("using ctxgraph storage backend");
+            Box::new(reflect_store::CtxgraphStorage::open(&db_path)?)
+        }
+        _ => {
+            tracing::info!("using sqlite storage backend");
+            Box::new(SqliteStorage::open(&db_path)?)
+        }
+    };
 
     let mut engine = PatternEngine::default();
     for rule in &config.patterns {
