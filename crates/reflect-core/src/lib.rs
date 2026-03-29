@@ -1,4 +1,6 @@
+pub mod dedup;
 pub mod error;
+pub mod pattern;
 pub mod storage;
 pub mod types;
 
