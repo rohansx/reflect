@@ -6,3 +6,6 @@ pub use eslint::parse_eslint_output;
 
 pub mod pytest;
 pub use pytest::parse_pytest_output;
+
+pub mod tsc;
+pub use tsc::parse_tsc_output;
