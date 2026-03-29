@@ -92,6 +92,58 @@ impl Default for PatternEngine {
                 category: "ownership".into(),
                 description: "Use of moved value (ownership violation)".into(),
             },
+            // pytest rules
+            PatternRule {
+                evaluator: "pytest".into(),
+                regex: Regex::new(r"Assertion(?:Error)?").unwrap(),
+                id: "python-assertion-error".into(),
+                category: "assertion".into(),
+                description: "Assertion failed in test".into(),
+            },
+            PatternRule {
+                evaluator: "pytest".into(),
+                regex: Regex::new(r"TypeError:.*argument").unwrap(),
+                id: "python-type-error-args".into(),
+                category: "type_error".into(),
+                description: "Wrong argument type passed to function".into(),
+            },
+            PatternRule {
+                evaluator: "pytest".into(),
+                regex: Regex::new(r"ImportError|ModuleNotFoundError").unwrap(),
+                id: "python-import-error".into(),
+                category: "import".into(),
+                description: "Module import failed".into(),
+            },
+            // eslint rules
+            PatternRule {
+                evaluator: "eslint".into(),
+                regex: Regex::new(r"no-unused-vars").unwrap(),
+                id: "js-unused-vars".into(),
+                category: "lint".into(),
+                description: "Variable declared but never used".into(),
+            },
+            PatternRule {
+                evaluator: "eslint".into(),
+                regex: Regex::new(r"no-explicit-any").unwrap(),
+                id: "ts-no-explicit-any".into(),
+                category: "type_safety".into(),
+                description: "Using 'any' type instead of specific type".into(),
+            },
+            // tsc rules
+            PatternRule {
+                evaluator: "tsc".into(),
+                regex: Regex::new(r"TS2322.*not assignable").unwrap(),
+                id: "ts-type-not-assignable".into(),
+                category: "type_error".into(),
+                description: "Type is not assignable to target type".into(),
+            },
+            PatternRule {
+                evaluator: "tsc".into(),
+                regex: Regex::new(r"TS2304.*Cannot find name").unwrap(),
+                id: "ts-cannot-find-name".into(),
+                category: "reference".into(),
+                description: "Reference to undefined name".into(),
+            },
         ])
     }
 }
@@ -169,6 +221,33 @@ mod tests {
             errors: vec![],
         };
         assert!(engine.extract(&[s]).is_empty());
+    }
+
+    #[test]
+    fn matches_python_assertion() {
+        let engine = PatternEngine::default();
+        let s = signal("pytest", "AssertionError: assert False is True");
+        let matches = engine.extract(&[s]);
+        assert_eq!(matches.len(), 1);
+        assert_eq!(matches[0].id, "python-assertion-error");
+    }
+
+    #[test]
+    fn matches_eslint_unused_vars() {
+        let engine = PatternEngine::default();
+        let s = signal("eslint", "'useState' is defined but never used  no-unused-vars");
+        let matches = engine.extract(&[s]);
+        assert_eq!(matches.len(), 1);
+        assert_eq!(matches[0].id, "js-unused-vars");
+    }
+
+    #[test]
+    fn matches_tsc_type_not_assignable() {
+        let engine = PatternEngine::default();
+        let s = signal("tsc", "TS2322: Type 'string' is not assignable to type 'number'");
+        let matches = engine.extract(&[s]);
+        assert_eq!(matches.len(), 1);
+        assert_eq!(matches[0].id, "ts-type-not-assignable");
     }
 
     #[test]

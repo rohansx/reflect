@@ -239,7 +239,7 @@ impl ReflectServer {
 
                     for sr in &existing_reflections {
                         if sr.reflection.pattern_id.as_deref() == Some(&first_match.id)
-                            && is_duplicate_lesson(&sr.reflection.lesson, &input.lesson, 0.8)
+                            && is_duplicate_lesson(&sr.reflection.lesson, &input.lesson, self.config.recall.dedup_threshold)
                         {
                             is_duplicate = true;
                             break;

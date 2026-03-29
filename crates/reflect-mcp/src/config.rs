@@ -60,11 +60,15 @@ fn default_timeout() -> u64 {
 #[serde(default)]
 pub struct RecallConfig {
     pub default_limit: usize,
+    pub dedup_threshold: f64,
 }
 
 impl Default for RecallConfig {
     fn default() -> Self {
-        Self { default_limit: 5 }
+        Self {
+            default_limit: 5,
+            dedup_threshold: 0.75,
+        }
     }
 }
 
